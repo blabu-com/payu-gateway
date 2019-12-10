@@ -2,9 +2,8 @@ import nock from 'nock'
 
 import { authorize, order } from '../src'
 import { mockAuthorize, mockOrder } from './utils/server'
-import {afterEach } from 'mocha'
 
-const { PAYU_CLIENT_ID, PAYU_CLIENT_SECRET, PAYU_CLIENT_NOTIFY_SITE_URL } = process.env
+import { afterEach, describe, it } from 'mocha'
 
 describe('order flow', () => {
   afterEach(() => {
@@ -28,16 +27,16 @@ describe('order flow', () => {
       phone: '654111654',
       firstName: 'John',
       lastName: 'Doe',
-      customerIp: '127.0.0.1',
+      customerIp: '127.0.0.1'
     }
 
     const payment = {
       currencyCode: 'PLN',
-      totalAmount: '15000',
+      totalAmount: '15000'
     }
 
     const cart = {
-      description: 'RTV market',
+      description: 'RTV market'
     }
 
     const { accessToken } = await authorize({

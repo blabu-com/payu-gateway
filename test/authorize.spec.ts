@@ -1,9 +1,6 @@
-import 'chai/register-should'
 import nock from 'nock'
 
 import { mockAuthorize } from './utils/server'
-
-import { Authorize } from '../src'
 
 const { PAYU_CLIENT_ID, PAYU_CLIENT_SECRET } = process.env
 
@@ -18,7 +15,7 @@ describe('authorize function', () => {
     const response = await authorize({
       clientSecret: PAYU_CLIENT_SECRET,
       clientId: PAYU_CLIENT_ID,
-      grantType: 'client_credentials',
+      grantType: 'client_credentials'
     })
 
     response.should.have.property('accessToken')

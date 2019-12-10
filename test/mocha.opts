@@ -1,7 +1,6 @@
 --bail
---require source-map-support/register
 --require ts-node/register
---recursive test/*.ts test/**/*.ts test/**/**/*.ts
+--recursive test/*.ts test/**/*.ts
 --check-leaks
 --globals express,__coverage__,__core*,regeneratorRuntime,lr
 -t 30000

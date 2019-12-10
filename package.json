@@ -7,13 +7,18 @@
     "url": "https://github.com/blabu-com/payu-gateway/issues"
   },
   "description": "Payment gateway for PayU",
-  "dependencies": {},
+  "dependencies": {
+    "superagent": "^5.1.2"
+  },
   "devDependencies": {
+    "assert": "^2.0.0",
+    "config": "^3.2.4",
     "mocha": "^6.1.4",
-    "nock": "^10.0.6",
-    "nodemon": "^1.19.1",
+    "nock": "^11.7.0",
+    "nodemon": "^2.0.1",
     "pre-commit": "^1.2.2",
     "sinon": "^7.3.2",
+    "ts-node": "^8.5.4",
     "tslint-config-standard-plus": "^2.3.0",
     "typescript": "^3.7.3"
   },
@@ -24,24 +29,20 @@
     "payu"
   ],
   "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "name": "gateway-payu",
+  "name": "payu-gateway",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hiddenboox/gateway-payu.git"
+    "url": "git+https://github.com/blabu-com/payu-gateway.git"
   },
   "scripts": {
-    "build": "rollup -c",
-    "debug": "babel-node --inspect-brk src/index.ts",
-    "semantic-release": "semantic-release",
-    "serve": "node ./dist/index.js",
-    "start": "nodemon --exec babel-node src/index.ts",
-    "test": "mocha --require dotenv/config --require @babel/register",
-    "test:watch": "mocha --require dotenv/config --require @babel/register --watch --watch-extensions js \"test/**/*.js\""
+    "build": "rm -rf ./build && npx tsc",
+    "dev": "env NODE_ENV=development nodemon --exec ts-node src/index.ts | bunyan -o short",
+    "lint": "npx tslint -c tslint.json --project tsconfig.json 'src/**/*.ts' 'test/**/*.ts'",
+    "test": "env NODE_ENV=test npx mocha --exit --opts test/mocha.opts test/*.ts",
+    "pretest": "npm run lint"
   },
   "source": "src/index.js",
   "version": "1.3.3"

@@ -1,9 +1,10 @@
-import 'chai/register-should'
 import nock from 'nock'
 
 import { mockOrder } from './utils/server'
+import { PayUFactory } from '../src'
+import config from 'config'
 
-import { order } from '../src'
+import { afterEach, describe, it } from 'mocha'
 
 describe('order function', () => {
   afterEach(() => {
@@ -13,12 +14,11 @@ describe('order function', () => {
   it('should return order status', async () => {
     mockOrder()
 
-    const response = await order({
-      accessToken: '123131=',
+    const response = await PayUFactory(config.get()).Order( '123131=',{
       payment: {},
       cart: {},
       buyer: {},
-      products: [],
+      products: []
     })
 
     response.should.have.property('redirectUri')
