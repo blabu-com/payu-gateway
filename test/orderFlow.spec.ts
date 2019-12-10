@@ -1,8 +1,8 @@
-import 'chai/register-should'
 import nock from 'nock'
 
 import { authorize, order } from '../src'
-import { mockAuthorize, mockOrder } from './server'
+import { mockAuthorize, mockOrder } from './utils/server'
+import {afterEach } from 'mocha'
 
 const { PAYU_CLIENT_ID, PAYU_CLIENT_SECRET, PAYU_CLIENT_NOTIFY_SITE_URL } = process.env
 
@@ -22,7 +22,7 @@ describe('order flow', () => {
         quantity: '1'
       }
     ]
-    
+
     const buyer = {
       email: 'john.doe@example.com',
       phone: '654111654',
@@ -46,7 +46,7 @@ describe('order flow', () => {
       grantType: 'client_credentials'
     })
     const response = await order({ accessToken, payment, cart, buyer, products })
-    
+
     response.should.have.property('redirectUri')
     response.should.have.property('orderId')
     response.should.have.property('status')

@@ -1,9 +1,9 @@
 import 'chai/register-should'
 import nock from 'nock'
 
-import { mockAuthorize } from './server'
+import { mockAuthorize } from './utils/server'
 
-import { authorize } from '../src'
+import { Authorize } from '../src'
 
 const { PAYU_CLIENT_ID, PAYU_CLIENT_SECRET } = process.env
 
