@@ -1,0 +1,87 @@
+{
+  "_from": "gateway-payu",
+  "_id": "gateway-payu@1.3.3",
+  "_inBundle": false,
+  "_integrity": "sha512-Ilz2/2bcRuZzGarZ4zCfvf3ASvVEHQ1XXn0jdy/j+FNGl9gdHaDT2cRIBR8D1TUMmJRWsGplBZTc3cOzVG/eqw==",
+  "_location": "/gateway-payu",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "gateway-payu",
+    "name": "gateway-payu",
+    "escapedName": "gateway-payu",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/gateway-payu/-/gateway-payu-1.3.3.tgz",
+  "_shasum": "558697f71ecb9869aa74aa9d79aea60358a97fba",
+  "_spec": "gateway-payu",
+  "_where": "/Users/tomasstrejcek/Dev/blabu/payment-service",
+  "author": {
+    "name": "Sebastian Sobociński",
+    "email": "sebastian@soft-bind.com"
+  },
+  "bugs": {
+    "url": "https://github.com/hiddenboox/gateway-payu/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "dotenv": "^8.0.0"
+  },
+  "deprecated": false,
+  "description": "Payment gateway for PayU",
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
+    "@pika/plugin-build-node": "^0.4.0",
+    "@pika/plugin-standard-pkg": "^0.4.0",
+    "builtin-modules": "^3.1.0",
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "nock": "^10.0.6",
+    "nodemon": "^1.19.1",
+    "prettier": "1.18.2",
+    "rollup": "^1.16.2",
+    "rollup-plugin-commonjs": "^10.0.0",
+    "rollup-plugin-json": "^4.0.0",
+    "semantic-release": "^15.13.18",
+    "sinon": "^7.3.2"
+  },
+  "homepage": "https://github.com/hiddenboox/gateway-payu#readme",
+  "keywords": [
+    "payment",
+    "gateway",
+    "payu"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "name": "gateway-payu",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hiddenboox/gateway-payu.git"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "debug": "babel-node --inspect-brk ./src/index.js",
+    "semantic-release": "semantic-release",
+    "serve": "node ./dist/index.js",
+    "start": "nodemon --exec babel-node ./src/index.js",
+    "test": "mocha --require dotenv/config --require @babel/register",
+    "test:watch": "mocha --require dotenv/config --require @babel/register --watch --watch-extensions js \"test/**/*.js\""
+  },
+  "source": "src/index.js",
+  "version": "1.3.3"
+}
