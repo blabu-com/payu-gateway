@@ -1,0 +1,12 @@
+{
+  "payu": {
+    "comment": "public domain keys for testing",
+    "url": "https://secure.snd.payu.com",
+    "posId": "300746",
+    "md5": "b6ca15b0d1020e8094d9b5f8d163db54",
+    "clientId": "300746",
+    "clientSecret": "2ee86a66e5d97e3fadc400c9f19b065d",
+    "notifyUrl": "",
+    "grantType": "client_credentials"
+  }
+}

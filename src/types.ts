@@ -13,6 +13,7 @@ export type Order = {
   buyer: Buyer
   products: Product[]
   customerIp: string
+  extOrderId?: string
 }
 
 export type Payment = {
@@ -31,6 +32,7 @@ export type Buyer = {
   phone: string
   firstName: string
   lastName: string
+  language: string
 }
 
 export type Product = {
@@ -41,12 +43,12 @@ export type Product = {
 
 export type Notification = {
 
-  "order": Order,
-  "localReceiptDateTime": "2016-03-02T12:58:14.828+01:00",
-  "properties": [
+  order: OrderPayload,
+  localReceiptDateTime: string,
+  properties: [
     {
-      "name": "PAYMENT_ID",
-      "value": "151471228"
+      name: string,
+      value: string
     }
   ]
 }
@@ -64,4 +66,15 @@ export type OrderPayload = Order & Buyer & Payment & Cart & {
   status: OrderStatus
 }
 
+export type PaymentType = 'PBL' | 'CARD_TOKEN' | 'INSTALLMENTS'
 export type OrderStatus = 'COMPLETED' | 'PENDING' | 'WAITING_FOR_CONFIRMATION' | 'CANCELED'
+
+export type OrderResult = {
+  // minimal data from notification order status update
+  orderId: string
+  extOrderId: string
+  merchantPosId: string // in case of multiple POS
+  status: OrderStatus
+  paymentType: PaymentType
+  properties: any
+}

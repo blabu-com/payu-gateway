@@ -1,54 +1,131 @@
-import * as assert from 'assert'
-import superagent from 'superagent'
-import { Config, Order } from './types'
+import assert from 'assert'
+import fetch from 'node-fetch'
+import { Config, Notification, Order, OrderResult } from './types'
 
-export const PayUClient = (url) => {
-  return superagent(url)
+const DEBUG = process.env.PAYU_DEBUG === 'true'
+
+export interface Logger {
+  trace(obj: any, msg?: string)
+
+  info(obj: any, msg?: string)
+
+  error(obj: any, msg?: string)
+
+  warning(obj: any, msg?: string)
+
+  fatal(obj: any, msg?: string)
 }
 
-export const PayUFactory = (config: Config) => {
-  const client = PayUClient(config.url)
+class MiniLogger implements Partial<Logger> {
+  trace(obj, msg) {
+    DEBUG && console.dir({ ...obj, msg }, { depth: 5 })
+  }
 
-  const Order = async (accessToken, order: Order) => {
-    const { payment, cart, buyer, products } = order
-    assert.ok(accessToken, 'accessToken should not be empty')
+  error(obj, msg) {
+    DEBUG && console.log(obj, msg)
+  }
+}
+
+export class PayUClient {
+  private accessToken: string
+
+  constructor(private readonly options: Config, private readonly logger: Partial<Logger> = new MiniLogger()) {
+
+  }
+
+  public defaultResponseHandler = async (response) => {
+    if (!response.ok && response.status >= 400) {
+      let res = await response.text()
+      if (res[0] === '{') {
+        res = await JSON.parse(res)
+      }
+      if (res.status) {
+        throw Error(response.statusText + ' ' + res.status.statusCode)
+      }
+      this.logger.error({ res, status: response.status, text: response.statusText }, 'order failed response')
+      throw Error(response.statusText + ' ' + res)
+    }
+    return response.json()
+  }
+
+  async Order(order: Order, accessToken?: string) {
+    const { payment, cart, buyer, products, customerIp } = order
     assert.ok(payment, 'payment should not be empty')
     assert.ok(cart, 'cart should not be empty')
     assert.ok(buyer, 'buyer should not be empty')
     assert.ok(products, 'products should not be empty')
 
-    return client.post(`/api/v2_1/orders`)
-      .set('Authorization', `Bearer ${accessToken}`)
-      .send({
-        notifyUrl: config.notifyUrl,
-        merchantPosId: config.clientId,
-        ...payment,
-        ...cart,
-        ...buyer,
-        ...products
+    if (!accessToken) {
+      if (!this.accessToken) {
+        const auth = await this.Authorize()
+        this.logger.trace({ auth }, 'Authorize')
+        this.accessToken = auth.accessToken
+      }
+    } else {
+      this.accessToken = accessToken
+    }
+    this.logger.trace({ accessToken: this.accessToken, options: this.options }, 'Access Token')
+    const params = {
+      notifyUrl: this.options.notifyUrl || undefined,
+      merchantPosId: this.options.clientId,
+      ...payment,
+      ...cart,
+      customerIp,
+      buyer,
+      products
+    }
+    this.logger.trace({ params }, 'create order')
+    return fetch(this.options.url + `/api/v2_1/orders`, {
+      method: 'POST',
+      body: JSON.stringify(params),
+      redirect: 'manual',
+      headers: {
+        'Authorization': `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(this.defaultResponseHandler)
+      .then(response => {
+        this.logger.trace({ response, params }, 'order response')
+        return response
       })
   }
 
-  const Authorize = async () => {
+  async Authorize() {
     const query = {
-      client_secret: config.clientSecret,
-      grant_type: config.grantType,
-      client_id: config.clientId
+      client_secret: this.options.clientSecret,
+      grant_type: this.options.grantType,
+      client_id: this.options.clientId
     }
-    return client.query(query).post(`/pl/standard/user/oauth/authorize`).then(response => ({
-      accessToken: response.access_token,
-      tokenType: response.token_type,
-      expiresIn: response.expires_in,
-      grantType: response.grant_type
-    }))
+
+    return fetch(this.options.url + `/pl/standard/user/oauth/authorize`, {
+      method: 'POST',
+      redirect: 'manual',
+      body: new URLSearchParams(query)
+    })
+      .then(this.defaultResponseHandler)
+      .then(response => {
+        this.logger.trace({ query, response })
+        return {
+          accessToken: response.access_token,
+          tokenType: response.token_type,
+          expiresIn: response.expires_in,
+          grantType: response.grant_type
+        }
+      })
   }
 
-  return {
-    Order,
-    Authorize
+  parseNotification(data: Notification): OrderResult {
+    assert.ok(data.order.status, 'missing order status')
+    assert.ok(data.order.orderId, 'missing order id')
+
+    return {
+      orderId: data.order.orderId,
+      status: data.order.status,
+      extOrderId: data.order.extOrderId,
+      merchantPosId: data.order.merchantPosId,
+      paymentType: data.order.payMethod.type,
+      properties: data.properties
+    }
   }
 }
-
-
-
-

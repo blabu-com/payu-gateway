@@ -1,24 +1,23 @@
 {
-  "author": {
-    "name": "Sebastian Sobociński <sebastian@soft-bind.com>",
-    "email": "Blabu.com <dev@blabu.com> (https://www.blabu.com)"
-  },
+  "author": "Blabu.com <dev@blabu.com> (https://www.blabu.com)",
   "bugs": {
     "url": "https://github.com/blabu-com/payu-gateway/issues"
   },
   "description": "Payment gateway for PayU",
   "dependencies": {
-    "superagent": "^5.1.2"
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.12.17",
     "assert": "^2.0.0",
     "config": "^3.2.4",
     "mocha": "^6.1.4",
     "nock": "^11.7.0",
     "nodemon": "^2.0.1",
     "pre-commit": "^1.2.2",
-    "sinon": "^7.3.2",
     "ts-node": "^8.5.4",
+    "tslint": "^5.20.1",
     "tslint-config-standard-plus": "^2.3.0",
     "typescript": "^3.7.3"
   },
@@ -38,12 +37,20 @@
     "url": "git+https://github.com/blabu-com/payu-gateway.git"
   },
   "scripts": {
-    "build": "rm -rf ./build && npx tsc",
+    "build": "rm -rf ./dist && npx tsc",
     "dev": "env NODE_ENV=development nodemon --exec ts-node src/index.ts | bunyan -o short",
     "lint": "npx tslint -c tslint.json --project tsconfig.json 'src/**/*.ts' 'test/**/*.ts'",
-    "test": "env NODE_ENV=test npx mocha --exit --opts test/mocha.opts test/*.ts",
-    "pretest": "npm run lint"
+    "lint:fix": "npx tslint --fix -c tslint.json --project tsconfig.json 'src/**/*.ts' 'test/**/*.ts'",
+    "pretest": "npm run lint",
+    "test": "env NODE_ENV=test npx mocha --exit --opts test/mocha.opts test/**/*.ts"
   },
-  "source": "src/index.js",
-  "version": "1.3.3"
+  "version": "1.3.3",
+  "files": [
+    "dist/**/*"
+  ],
+  "pre-commit": [
+    "test"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts"
 }

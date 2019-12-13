@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "rootDir": ".",
     "module": "commonjs",
     "lib": [
       "es2017"
@@ -9,13 +8,12 @@
     "esModuleInterop": true,
     "allowJs": false,
     "sourceMap": true,
-    "outDir": "build",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "outDir": "dist",
     "strictPropertyInitialization": false,
     "baseUrl": ".",
     "strictNullChecks": false,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "declaration": true
   },
   "include": [
     "src/*.ts",
@@ -26,6 +24,6 @@
     "docs",
     "coverage",
     ".nyc_output",
-    "test"
+    "test/**/*"
   ]
 }
