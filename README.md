@@ -1,8 +1,12 @@
 #PayU Gateway
 
 ## Environments
-  SANDBOX: 'https://secure.snd.payu.com',
-  PRODUCTION: 'https://secure.payu.com'
+* SANDBOX: https://secure.snd.payu.com
+* PRODUCTION: https://secure.payu.com
+
+## Implementation
+For performance reasons, I suggest to separately handle access token and its refresh and caching from order process,
+but for small scale operations its just fine to get access token on the fly.
 
 ## Cards
 In order to test card payments on sandbox, please use the following credentials.

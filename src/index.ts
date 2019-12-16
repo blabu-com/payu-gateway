@@ -1,6 +1,6 @@
 import assert from 'assert'
 import fetch from 'node-fetch'
-import { Config, Notification, Order, OrderResult } from './types'
+import { Config, Notification, Order, OrderResponse, OrderResult, PayUToken } from './types'
 
 const DEBUG = process.env.PAYU_DEBUG === 'true'
 
@@ -33,7 +33,7 @@ export class PayUClient {
 
   }
 
-  public defaultResponseHandler = async (response) => {
+  public defaultResponseHandler = async (response): Promise<Object> => {
     if (!response.ok && response.status >= 400) {
       let res = await response.text()
       if (res[0] === '{') {
@@ -48,7 +48,10 @@ export class PayUClient {
     return response.json()
   }
 
-  async order(order: Order, accessToken?: string) {
+  /**
+   * accessToken is variable parameter, for high performance, I suggest doing auth and order flow separately.
+   */
+  async order(order: Order, accessToken?: string): Promise<OrderResponse> {
     const { payment, cart, buyer, products, customerIp } = order
     assert.ok(payment, 'payment should not be empty')
     assert.ok(cart, 'cart should not be empty')
@@ -91,7 +94,7 @@ export class PayUClient {
       })
   }
 
-  async authorize() {
+  async authorize(): Promise<PayUToken> {
     const query = {
       client_secret: this.options.clientSecret,
       grant_type: this.options.grantType,

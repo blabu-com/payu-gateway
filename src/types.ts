@@ -70,6 +70,12 @@ export type OrderPayload = Order & Buyer & Payment & Cart & {
   status: OrderStatus
 }
 
+export type OrderResponse = {
+  status: { statusCode: string },
+  redirectUri: string,
+  orderId: string
+}
+
 export type PaymentType = 'PBL' | 'CARD_TOKEN' | 'INSTALLMENTS'
 export type OrderStatus = 'COMPLETED' | 'PENDING' | 'WAITING_FOR_CONFIRMATION' | 'CANCELED'
 
@@ -81,4 +87,11 @@ export type OrderResult = {
   status: OrderStatus
   paymentType: PaymentType
   properties: any
+}
+
+export type PayUToken = {
+  accessToken: string
+  tokenType: string
+  expiresIn: string
+  grantType: string
 }

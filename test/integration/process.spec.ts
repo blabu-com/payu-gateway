@@ -32,6 +32,7 @@ describe('process', () => {
     }
 
     const response = await (new PayUClient(config.get('payu'))).order({ payment, cart, buyer, products, customerIp })
+    console.log(response)
     assert.strictEqual(response.redirectUri.indexOf('https://merch-prod.snd.payu.com/pay/?orderId='), 0)
     assert.ok(response.orderId)
     assert.deepEqual(response.status, { statusCode: 'SUCCESS' })

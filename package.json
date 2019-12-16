@@ -1,4 +1,5 @@
 {
+  "name": "@blabu.com/payu-gateway",
   "author": "Blabu.com <dev@blabu.com> (https://www.blabu.com)",
   "bugs": {
     "url": "https://github.com/blabu-com/payu-gateway/issues"
@@ -27,7 +28,6 @@
     "payu"
   ],
   "license": "MIT",
-  "name": "payu-gateway",
   "publishConfig": {
     "access": "public"
   },
@@ -36,12 +36,13 @@
     "url": "git+https://github.com/blabu-com/payu-gateway.git"
   },
   "scripts": {
-    "build": "rm -rf ./dist && npx tsc",
+    "build": "rm -rf ./dist && tsc",
     "dev": "env NODE_ENV=development nodemon --exec ts-node src/index.ts",
     "lint": "tslint -c tslint.json --project tsconfig.json 'src/**/*.ts' 'test/**/*.ts'",
     "lint:fix": "tslint --fix -c tslint.json --project tsconfig.json 'src/**/*.ts' 'test/**/*.ts'",
     "pretest": "npm run lint",
-    "test": "mocha --exit --opts test/mocha.opts test/**/*.ts"
+    "test": "mocha --exit --opts test/mocha.opts test/**/*.ts",
+    "prepublishOnly": "npm run build"
   },
   "version": "0.1.0",
   "files": [
