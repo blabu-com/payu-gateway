@@ -20,6 +20,7 @@ export type Payment = {
   totalAmount: string
 }
 
+// might be good enough to just type this to string and leave it up to implementer?
 export enum Currency {
   PLN = 'PLN',
   CZK = 'CZK',
