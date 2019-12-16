@@ -44,7 +44,7 @@
     "test": "mocha --exit --opts test/mocha.opts test/**/*.ts",
     "prepublishOnly": "npm run build"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "files": [
     "dist/**/*"
   ],
