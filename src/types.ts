@@ -7,7 +7,6 @@ export type Config = {
 }
 
 export type Order = {
-  accessToken: string
   payment: Payment
   cart: Cart
   buyer: Buyer
@@ -21,7 +20,11 @@ export type Payment = {
   totalAmount: string
 }
 
-export type Currency = 'PLN' | 'CZK' | 'EUR'
+export enum Currency {
+  PLN = 'PLN',
+  CZK = 'CZK',
+  EUR = 'EUR'
+}
 
 export type Cart = {
   description: string

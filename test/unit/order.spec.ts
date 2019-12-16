@@ -16,7 +16,7 @@ describe('order function', () => {
   it('should return order status', async () => {
     mockOrder()
 
-    const res = await new PayUClient(config.get('payu')).Order({
+    const res = await new PayUClient(config.get('payu')).order({
       payment: {},
       cart: {},
       buyer: {},

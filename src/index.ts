@@ -37,7 +37,7 @@ export class PayUClient {
     if (!response.ok && response.status >= 400) {
       let res = await response.text()
       if (res[0] === '{') {
-        res = await JSON.parse(res)
+        res = JSON.parse(res)
       }
       if (res.status) {
         throw Error(response.statusText + ' ' + res.status.statusCode)
@@ -48,7 +48,7 @@ export class PayUClient {
     return response.json()
   }
 
-  async Order(order: Order, accessToken?: string) {
+  async order(order: Order, accessToken?: string) {
     const { payment, cart, buyer, products, customerIp } = order
     assert.ok(payment, 'payment should not be empty')
     assert.ok(cart, 'cart should not be empty')
@@ -57,7 +57,7 @@ export class PayUClient {
 
     if (!accessToken) {
       if (!this.accessToken) {
-        const auth = await this.Authorize()
+        const auth = await this.authorize()
         this.logger.trace({ auth }, 'Authorize')
         this.accessToken = auth.accessToken
       }
@@ -91,7 +91,7 @@ export class PayUClient {
       })
   }
 
-  async Authorize() {
+  async authorize() {
     const query = {
       client_secret: this.options.clientSecret,
       grant_type: this.options.grantType,

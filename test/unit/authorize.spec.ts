@@ -13,7 +13,7 @@ describe('authorize function', () => {
   it('should return oauth token', async () => {
     mockAuthorize()
 
-    const response = await new PayUClient(config.get('payu')).Authorize()
+    const response = await new PayUClient(config.get('payu')).authorize()
     assert.ok(response.accessToken)
     assert.ok(response.tokenType)
     assert.ok(response.expiresIn)

@@ -5,7 +5,7 @@ import assert from 'assert'
 
 describe('authorization', () => {
   it('should authorize via real api', async () => {
-    const res = await new PayUClient(config.get('payu')).Authorize()
+    const res = await new PayUClient(config.get('payu')).authorize()
 
     assert.ok(res.accessToken)
     assert.ok(res.tokenType)
