@@ -9,10 +9,11 @@ export type Config = {
 export type Order = {
   payment: Payment
   cart: Cart
-  buyer: Buyer
+  continueUrl: string
   products: Product[]
   customerIp: string
   extOrderId?: string
+  buyer?: Buyer
 }
 
 export type Payment = {
@@ -32,11 +33,11 @@ export type Cart = {
 }
 
 export type Buyer = {
-  email: string
-  phone: string
-  firstName: string
-  lastName: string
-  language: string
+  email?: string
+  phone?: string
+  firstName?: string
+  lastName?: string
+  language?: string
 }
 
 export type Product = {
