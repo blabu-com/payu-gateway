@@ -52,10 +52,9 @@ export class PayUClient {
    * accessToken is variable parameter, for high performance, I suggest doing auth and order flow separately.
    */
   async order(order: Order, accessToken?: string): Promise<OrderResponse> {
-    const { payment, cart, buyer, products, customerIp } = order
+    const { payment, cart, buyer, products, customerIp, continueUrl } = order
     assert.ok(payment, 'payment should not be empty')
     assert.ok(cart, 'cart should not be empty')
-    assert.ok(buyer, 'buyer should not be empty')
     assert.ok(products, 'products should not be empty')
 
     if (!accessToken) {
@@ -75,7 +74,8 @@ export class PayUClient {
       ...cart,
       customerIp,
       buyer,
-      products
+      products,
+      continueUrl
     }
     this.logger.trace({ params }, 'create order')
     return fetch(this.options.url + `/api/v2_1/orders`, {

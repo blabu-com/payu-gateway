@@ -31,7 +31,9 @@ describe('process', () => {
       description: 'RTV market'
     }
 
-    const response = await (new PayUClient(config.get('payu'))).order({ payment, cart, buyer, products, customerIp })
+    const continueUrl = 'http://localhost'
+
+    const response = await (new PayUClient(config.get('payu'))).order({ payment, cart, buyer, products, customerIp, continueUrl })
     console.log(response)
     assert.strictEqual(response.redirectUri.indexOf('https://merch-prod.snd.payu.com/pay/?orderId='), 0)
     assert.ok(response.orderId)
