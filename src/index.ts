@@ -16,6 +16,11 @@ export interface Logger {
   fatal(obj: any, msg?: string)
 }
 
+export class PayUError extends Error {
+  request: any
+  response: any
+}
+
 class MiniLogger implements Partial<Logger> {
   trace(obj, msg) {
     DEBUG && console.dir({ ...obj, msg }, { depth: 5 })
@@ -40,10 +45,10 @@ export class PayUClient {
         res = JSON.parse(res)
       }
       if (res.status) {
-        throw Error(response.statusText + ' ' + res.status.statusCode)
+        throw (new PayUError(response.statusText + ' ' + res.status.statusCode).response = res)
       }
       this.logger.error({ res, status: response.status, text: response.statusText }, 'order failed response')
-      throw Error(response.statusText + ' ' + res)
+      throw (new PayUError(response.statusText + ' ' + res).response = res)
     }
     return response.json()
   }
@@ -92,6 +97,10 @@ export class PayUClient {
         this.logger.trace({ response, params }, 'order response')
         return response
       })
+      .catch(err => {
+        err.request = params
+        throw err
+      })
   }
 
   async authorize(): Promise<PayUToken> {
@@ -115,6 +124,10 @@ export class PayUClient {
           expiresIn: response.expires_in,
           grantType: response.grant_type
         }
+      })
+      .catch(err => {
+        err.request = 'credentials'
+        throw err
       })
   }
 
