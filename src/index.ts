@@ -59,8 +59,10 @@ export class PayUClient {
   async order(order: Order, accessToken?: string): Promise<OrderResponse> {
     const { payment, cart, buyer, products, customerIp, continueUrl } = order
     assert.ok(payment, 'payment should not be empty')
+    assert.ok(Number.isInteger(payment.totalAmount), 'payment.totalAmount must be an integer')
     assert.ok(cart, 'cart should not be empty')
     assert.ok(products, 'products should not be empty')
+    products.forEach(p => assert.ok(Number.isInteger(p.unitPrice), 'product.unitPRice must be an integer'))
 
     if (!accessToken) {
       if (!this.accessToken) {
@@ -76,10 +78,13 @@ export class PayUClient {
       notifyUrl: this.options.notifyUrl || undefined,
       merchantPosId: this.options.clientId,
       ...payment,
+      totalAmount: payment.totalAmount.toString(),
       ...cart,
       customerIp,
       buyer,
-      products,
+      products: products.map(p => {
+        return { ...p, unitPrice: p.unitPrice.toString() }
+      }),
       continueUrl
     }
     this.logger.trace({ params }, 'create order')
