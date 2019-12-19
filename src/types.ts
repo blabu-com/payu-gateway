@@ -21,7 +21,7 @@ export type Order = {
  */
 export type Payment = {
   currencyCode: Currency
-  totalAmount: string
+  totalAmount: number
 }
 
 // might be good enough to just type this to string and leave it up to implementer?
@@ -45,7 +45,7 @@ export type Buyer = {
 
 export type Product = {
   name: string
-  unitPrice: string
+  unitPrice: number
   quantity: string
 }
 

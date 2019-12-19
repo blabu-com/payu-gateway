@@ -18,7 +18,7 @@ describe('order function', () => {
 
     const res = await new PayUClient(config.get('payu')).order({
       payment: {
-        totalAmount: '8200',
+        totalAmount: 8200,
         currencyCode: Currency.PLN
       },
       cart: {},
@@ -35,7 +35,7 @@ describe('order function', () => {
   it('should not allow payments with floating points', async () => {
     const request = new PayUClient(config.get('payu')).order({
       payment: {
-        totalAmount: '82.15',
+        totalAmount: 82.15,
         currencyCode: Currency.PLN
       },
       cart: {},
@@ -43,6 +43,6 @@ describe('order function', () => {
       products: []
     } as Order, '123131=')
 
-    await assert.rejects(request, err => err.message === 'No floating point is allowed, multiply by 100')
+    await assert.rejects(request, err => err.message === 'payment.totalAmount must be an integer')
   })
 })
