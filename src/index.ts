@@ -61,6 +61,8 @@ export class PayUClient {
     assert.ok(payment, 'payment should not be empty')
     assert.ok(cart, 'cart should not be empty')
     assert.ok(products, 'products should not be empty')
+    assert.strictEqual(payment.totalAmount.includes('.'), false, 'No floating point is allowed, multiply by 100')
+    assert.strictEqual(payment.totalAmount.includes(','), false, 'No floating point is allowed, multiply by 100')
 
     if (!accessToken) {
       if (!this.accessToken) {

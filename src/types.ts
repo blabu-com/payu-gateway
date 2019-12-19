@@ -16,6 +16,9 @@ export type Order = {
   buyer?: Buyer
 }
 
+/**
+ * totalAmount must be passed using the lowest currency unit. That means * 100. No floating point is allowed
+ */
 export type Payment = {
   currencyCode: Currency
   totalAmount: string
